@@ -5,3 +5,20 @@
     margin-top: 1em;
     padding: 0.5em;
 }
+
+.card {
+    background-color: lightgray;
+    margin: 2px;
+}
+
+.grade {
+    float: right;
+}
+
+.good-grade {
+    color: green;
+}
+
+.bad-grade {
+    color: red;
+}

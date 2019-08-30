@@ -48,7 +48,9 @@ export const profile = async () => {
     method: 'GET'
   })
   const json = await response.json()
-
+  if(json.status === 200) {
+    json.user.isAdmin = json.user.type === 'ADMIN'
+  }
   return json
 }
 
