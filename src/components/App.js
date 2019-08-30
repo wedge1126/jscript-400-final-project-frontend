@@ -5,6 +5,7 @@ import Navigation from './shared/Navigation/Navigation'
 import Login from './auth/LoginForm'
 import Signup from './auth/SignupForm'
 import AllStudentsContainer from './students/Container'
+import AssignmentsContainer from './assignments/Container'
 import * as auth from '../api/auth'
 import { getToken } from '../helpers/local-storage'
 
@@ -60,12 +61,14 @@ class App extends React.Component {
         <Navigation currentUser={currentUser} logoutUser={this.logoutUser} />
         <Switch>
           <Route path='/login' exact component={() => {
-            return currentUser ? <Redirect to='/students' /> : <Login onSubmit={this.loginUser} />
+            return currentUser ? <Redirect to='/assignments' /> : <Login onSubmit={this.loginUser} />
           }} />
           <Route path='/signup' exact component={() => {
-            return currentUser ? <Redirect to='/students' /> : <Signup onSubmit={this.signupUser} />
+            return currentUser ? <Redirect to='/assignments' /> : <Signup onSubmit={this.signupUser} />
           }} />
-
+          <Route path='/assignments' render={() => {
+            return  currentUser ? <AssignmentsContainer currentUser={currentUser} /> : <Redirect to='/login' />
+          }} />
           <Route path='/students' render={() => {
             return  currentUser ? <AllStudentsContainer currentUser={currentUser} /> : <Redirect to='/login' />
           }} />

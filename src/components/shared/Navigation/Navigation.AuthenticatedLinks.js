@@ -15,7 +15,7 @@ const AuthenticatedLinks = ({ currentUser, logoutUser, history }) => {
 
         { !currentUser.isAdmin &&
           <li className='nav-item'>
-            <Link className='nav-link' to='/users'>Home</Link>
+            <Link className='nav-link' to='/assignments'>Home</Link>
           </li>
         }
 
