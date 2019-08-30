@@ -1,13 +1,17 @@
 import React from 'react'
+import '../App.css'
 
 export default class SignupForm extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
-      first_name: '',
-      last_name: '',
-      email: '',
-      password: ''
+      errors: [],
+      user: {
+        first_name: '',
+        last_name: '',
+        email: '',
+        password: ''
+      }
     }
 
     this.handleChange = this.handleChange.bind(this)
@@ -15,15 +19,19 @@ export default class SignupForm extends React.Component {
   }
 
   handleChange ({ target: { name, value } }) {
-    this.setState({ [name]: value })
+    this.setState({ user: { ...this.state.user, [name]: value} })
   }
 
   handleSubmit (e) {
     e.preventDefault()
-    this.props.onSubmit(this.state)
+    this.setState({ errors: [] })
+    this.props.onSubmit(this.state.user).catch(e => {
+      this.setState({ errors: e.message })
+    })
   }
 
   render () {
+    const errors = this.state.errors.map((e, idx) => <li key={idx} >{e}</li>)
     return (
       <main className='container'>
         <section className='row justify-content-md-center'>
@@ -38,7 +46,7 @@ export default class SignupForm extends React.Component {
                   onChange={this.handleChange}
                   name='first_name'
                   type='text'
-                  value={this.state.first_name} />
+                  value={this.state.user.first_name} />
               </div>
               <div className='form-group'>
                 <label htmlFor='last_name'>Last Name</label>
@@ -48,7 +56,7 @@ export default class SignupForm extends React.Component {
                   onChange={this.handleChange}
                   name='last_name'
                   type='text'
-                  value={this.state.last_name} />
+                  value={this.state.user.last_name} />
               </div>
               <div className='form-group'>
                 <label htmlFor='email'>Email</label>
@@ -58,7 +66,7 @@ export default class SignupForm extends React.Component {
                   onChange={this.handleChange}
                   name='email'
                   type='text'
-                  value={this.state.email} />
+                  value={this.state.user.email} />
               </div>
               <div className='form-group'>
                 <label htmlFor='password'>Password</label>
@@ -68,10 +76,15 @@ export default class SignupForm extends React.Component {
                   onChange={this.handleChange}
                   name='password'
                   type='password'
-                  value={this.state.password} />
+                  value={this.state.user.password} />
               </div>
               <button type='submit' className='btn btn-primary'>Submit</button>
             </form>
+            <div className='error-message'>
+              <ul>
+                {errors}
+              </ul>
+            </div>
           </div>
         </section>
       </main>
