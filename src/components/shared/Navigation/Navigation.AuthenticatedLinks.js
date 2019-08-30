@@ -55,7 +55,7 @@ const AuthenticatedLinks = ({ currentUser, logoutUser, history }) => {
         </li>
         <li className='nav-item'>
           <span className='nav-link'>
-            {`Welcome, ${currentUser.first_name} ${currentUser.last_name}!`}
+            {`Welcome, ${currentUser.first_name}!`}
           </span>
         </li>
       </ul>

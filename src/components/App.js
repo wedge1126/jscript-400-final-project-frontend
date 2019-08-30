@@ -42,7 +42,7 @@ class App extends React.Component {
 
   async signupUser (user) {
     const response = await auth.signup(user)
-    if(response.status !== 200) {
+    if(response.status !== 201) {
       throw response
     }
     const profile = await auth.profile()
