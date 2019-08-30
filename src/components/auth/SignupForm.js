@@ -26,7 +26,8 @@ export default class SignupForm extends React.Component {
     e.preventDefault()
     this.setState({ errors: [] })
     this.props.onSubmit(this.state.user).catch(e => {
-      this.setState({ errors: e.message })
+      const errors = Array.isArray(e.message) ? e.message : [e.message]
+      this.setState({ errors: errors })
     })
   }
 
@@ -80,11 +81,13 @@ export default class SignupForm extends React.Component {
               </div>
               <button type='submit' className='btn btn-primary'>Submit</button>
             </form>
-            <div className='error-message'>
-              <ul>
-                {errors}
-              </ul>
-            </div>
+            {errors.length > 0 &&
+              <div className='error-message'>
+                <ul>
+                  {errors}
+                </ul>
+              </div>
+            }
           </div>
         </section>
       </main>

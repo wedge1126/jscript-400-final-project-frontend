@@ -22,7 +22,10 @@ class App extends React.Component {
   }
 
   async loginUser (user) {
-    await auth.login(user)
+    const response = await auth.login(user)
+    if(response.status !== 200) {
+      throw response
+    }
     const profile = await auth.profile()
     this.setState({
       currentUser: profile.user })
