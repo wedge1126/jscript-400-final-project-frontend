@@ -1,8 +1,7 @@
 import React from 'react'
 import Actions from './List.Actions'
 
-export default ({ currentUser, assignments }) => {
-  console.log(assignments)
+export default ({ currentUser, assignments, destroyAssignment }) => {
   const assignmentCards = assignments.map(assignment => (
     <div key={assignment._id} className='card'>
       <div className='card-title'>
@@ -13,7 +12,7 @@ export default ({ currentUser, assignments }) => {
         <p className='card-text'>{ assignment.project_description }</p>
         <a href={assignment.project_link}>Project Link</a>
       </div>
-      <Actions currentUser={currentUser} assignment={assignment} />
+      <Actions currentUser={currentUser} assignment={assignment} destroyAssignment={destroyAssignment} />
     </div>
   ))
 

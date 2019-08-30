@@ -3,6 +3,8 @@ import { Route } from 'react-router-dom'
 import { withRouter } from 'react-router'
 
 import List from './List/List'
+import NewForm from './Form/New.Form'
+import EditForm from './Form/Edit.Form'
 
 import * as assignmentsApi from '../../api/assignments'
 
@@ -13,34 +15,32 @@ class Container extends React.Component {
       assignments: [],
       loading: true
     }
+    this.destroyAssignment = this.destroyAssignment.bind(this)
+    this.createAssignment = this.createAssignment.bind(this)
+    this.editAssignment = this.editAssignment.bind(this)
   }
 
-  // async createPost (post) {
-  //   const { currentUserId, history, refreshUsers } = this.props
-  //   console.log('Submitting Post:', post)
-  //   await postsApi.createPost(currentUserId, post)
-  //   await refreshUsers()
-  //   history.push(`/users/${currentUserId}/posts`)
-  // }
+  async createAssignment (assignment) {
+    const { currentUser, history } = this.props
+    const response = await assignmentsApi.createAssignment(currentUser._id, assignment)
+    if(response.status !== 201) throw response
+    await this.refresh()
+    history.push(`/assignments`)
+  }
 
-  // async destroyPost (post) {
-  //   const { currentUserId, history, refreshUsers } = this.props
-  //   console.log('Destroying Post:', post)
-  //   await postsApi.deletePost(currentUserId, post)
-  //   await refreshUsers()
-  //   history.push(`/users/${currentUserId}/posts`)
-  // }
+  async destroyAssignment (assignment) {
+    const { currentUser, history } = this.props
+    await assignmentsApi.deleteAssignment(currentUser._id, assignment)
+    await this.refresh()
+    history.push(`/assignments`)
+  }
 
-  // async editPost (post) {
-  //   const { currentUserId, history, refreshUsers } = this.props
-  //   console.log('Editting Post:', post)
-  //   await postsApi.updatePost(currentUserId, post)
-  //   await refreshUsers()
-  //   history.push(`/users/${currentUserId}/posts`)
-  // }
-
-  async getAssignments() {
-
+  async editAssignment (assignment) {
+    const { currentUser, history } = this.props
+    const response = await assignmentsApi.updateAssignment(currentUser._id, assignment)
+    if(response.status !== 200) throw response
+    await this.refresh()
+    history.push(`/assignments`)
   }
 
   render () {
@@ -50,13 +50,24 @@ class Container extends React.Component {
     return (
       <>
         <Route path='/assignments' exact component={() => {
-          return <List currentUser={currentUser} assignments={this.state.assignments} />
+          return <List currentUser={currentUser} assignments={this.state.assignments} destroyAssignment={this.destroyAssignment} />
+        }} />
+        <Route path='/assignments/new' exact component={() => {
+          return <NewForm onSubmit={this.createAssignment} />
+        }} />
+        <Route path='/assignments/:assignmentId/edit' exact component={({ match }) => {
+          const assignment = this.state.assignments.find(a => a._id === match.params.assignmentId)
+          return <EditForm onSubmit={this.editAssignment} assignment={assignment} />
         }} />
       </>
     )
   }
 
   async componentDidMount () {
+    await this.refresh()
+  }
+
+  async refresh() {
     const response = await assignmentsApi.getAssignments(this.props.currentUser._id)
     const assignments = response.response.assignments
     this.setState({ assignments, loading: false })

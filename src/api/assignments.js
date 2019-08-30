@@ -1,7 +1,4 @@
 import request from './request'
-import { getToken } from '../helpers/local-storage'
-const { REACT_APP_API_DOMAIN } = process.env
-const BASE_URL = REACT_APP_API_DOMAIN
 
 export const getAssignments = (userId) => {
   const path = `/api/students/${userId}/assignments`
@@ -9,28 +6,38 @@ export const getAssignments = (userId) => {
   return request(path, options)
 }
 
-export const deleteAssignment = async (userId, post) => {
-  const token = getToken()
-  const response = await fetch(`${BASE_URL}/api/users/${userId}/posts/${post._id}`, {
-    headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    method: 'DELETE'
-  })
-  const json = await response.json()
-
-  return json
-}
-
-export const createAssignment = (userId, post) => {
+export const createAssignment = (userId, assignment) => {
   const path = `/api/students/${userId}/assignments`
-  const options = { body: post, method: 'POST' }
+  const options = { body: assignment, method: 'POST' }
   return request(path, options)
 }
 
-export const updateAssignment = (userId, post) => {
-  const path = `/api/users/${userId}/posts/${post._id}`
-  const options = { body: post, method: 'PUT' }
+export const updateAssignment = (userId, assignment) => {
+  const path = `/api/students/${userId}/assignments/${assignment._id}`
+  const options = { body: assignment, method: 'PUT' }
+  return request(path, options)
+}
+
+export const updateGrade = (userId, assignment) => {
+  const path = `/api/students/${userId}/assignments/${assignment._id}`
+  const options = { body: assignment, method: 'PATCH' }
+  return request(path, options)
+}
+
+export const deleteAssignment = async (userId, assignment) => {
+  const path = `/api/students/${userId}/assignments/${assignment._id}`
+  const options = { method: 'DELETE' }
+  return request(path, options)
+}
+
+export const getUngraded = async () => {
+  const path = `/api/assignments/ungraded`
+  const options = { method: 'GET' }
+  return request(path, options)
+}
+
+export const getGraded = async () => {
+  const path = `/api/assignments/graded`
+  const options = { method: 'GET' }
   return request(path, options)
 }

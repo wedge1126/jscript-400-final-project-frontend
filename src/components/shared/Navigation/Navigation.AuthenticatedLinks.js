@@ -25,7 +25,7 @@ const AuthenticatedLinks = ({ currentUser, logoutUser, history }) => {
 
         { !currentUser.isAdmin &&
           <li className='nav-item'>
-            <Link className='nav-link' to={`/users/${currentUser._id}/posts/new`}>
+            <Link className='nav-link' to={`/assignments/new`}>
               Create New Assignment
             </Link>
           </li>
@@ -34,12 +34,12 @@ const AuthenticatedLinks = ({ currentUser, logoutUser, history }) => {
         { currentUser.isAdmin &&
           <>
             <li className='nav-item'>
-              <Link className='nav-link' to={`/users/${currentUser._id}/posts/new`}>
+              <Link className='nav-link' to={`/assignments/ungraded`}>
                 Ungraded Assignments
               </Link>
             </li>
             <li className='nav-item'>
-              <Link className='nav-link' to={`/users/${currentUser._id}/posts/new`}>
+              <Link className='nav-link' to={`/assignments/graded`}>
                 Graded Assignments
               </Link>
             </li>
