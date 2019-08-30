@@ -7,8 +7,8 @@
 }
 
 .card {
-    background-color: lightgray;
-    margin: 2px;
+    background-color: rgb(221, 221, 221);
+    margin: 0.3em;
 }
 
 .grade {
